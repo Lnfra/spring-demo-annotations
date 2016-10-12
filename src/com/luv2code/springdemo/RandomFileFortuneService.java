@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,9 +17,9 @@ public class RandomFileFortuneService implements FortuneService {
   private String[] data;
   private Random generator = new Random();
   
-  RandomFileFortuneService() throws IOException{
-    this.data = readFile("randomFortunes.txt");
-  }
+//  public RandomFileFortuneService() throws IOException{
+//    this.data = readFile();
+//  }
   
   @Override
   public String getFortune() {
@@ -25,8 +27,10 @@ public class RandomFileFortuneService implements FortuneService {
     return data[randomNum];
   }
   
-  private String[] readFile(String fileName) throws IOException{
-    try( BufferedReader br = new BufferedReader(new FileReader(fileName)) ){
+  @PostConstruct
+  private String[] readFile() throws IOException{
+    System.out.println(">> RandomFileFortuneSevice: post construct reading file from filesys");
+    try( BufferedReader br = new BufferedReader(new FileReader("randomFortunes.txt")) ){
       String line = br.readLine();
       ArrayList<String> temp = new ArrayList<String>();
         
